@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('images/loginimg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            font-family: 'Merriweather', serif;
+            font-weight: bold;
+        }
+
+        .login-container {
+            backdrop-filter: blur(15px);
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 20px;
+        }
+
+        .login-container label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-container input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .login-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label for="Uname">Username</label>
+            <input id="Uname" placeholder="Enter your Username" type="text" required><br>
+            <label for="Password">Password</label>
+            <input id="Password" placeholder="Enter your Password" type="password" required><br>
+            <input type="submit" value="Login">
+            <p>If you're a new user <a href="signup.html">Sign Up</a></p>
+        </form>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const enteredUsername = document.getElementById('Uname').value;
+            const enteredPassword = document.getElementById('Password').value;
+
+            const storedData = localStorage.getItem('userData');
+            if (storedData) {
+                const { userName, password } = JSON.parse(storedData);
+
+                if (enteredUsername === userName && enteredPassword === password) {
+                    alert('Login successful!');
+                    window.location.href = 'index.html'; // Redirect to the desired page
+                } else {
+                    alert('Invalid username or password. Please try again.');
+                }
+            } else {
+                alert('No user data found. Please sign up first.');
+            }
+        });
+    </script>
+</body>
+</html>

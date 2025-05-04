@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <style>
+        body {
+            text-align: center;
+            background-image: url('images/personalInfo.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .Logo {
+            position: absolute;
+            left: 20px;
+            font-size: 2.5rem;
+            color: black;
+            font-weight: bolder;
+        }
+
+        .Logo a {
+            text-decoration: none;
+            font-size: 25px;
+            color: black;
+        }
+
+        .Logo i {
+            color: green;
+        }
+
+        .form-container {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            height: calc(100vh - 200px);
+        }
+
+        .form-container form {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            margin: 10px;
+            position: relative;
+            width: 300px;
+            box-sizing: border-box;
+        }
+
+        .form-container form .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            color: red;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .Booking_Form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 100px);
+            margin-top: 10px;
+        }
+
+        #initialForm {
+            border: 1px solid black;
+            padding: 30px;
+            border-radius: 2rem;
+            width: fit-content;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        #initialForm label,
+        input,
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 3px;
+            border-radius: 0.5rem;
+        }
+
+        button {
+            padding: 8px 16px;
+        }
+
+        input,
+        select {
+            width: calc(100% - 20px);
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            text-align: left;
+            width: 100%;
+            padding-left: 10px;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            padding: 5px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .final-submit {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="Topic">
+        <div class="Logo">
+            <a href="#" class="logo"><i class="fas fa-hiking"></i> Travelers World</a>
+        </div>
+        <h1>Booking Form</h1><br>
+    </div>
+    <div class="Booking_Form">
+        <form id="initialForm" onsubmit="generateForms(event)">
+            <label for="numChildren">Number of Children</label>
+            <input type="number" id="numChildren" name="numChildren" min="0" required><br>
+            <label for="numAdults">Number of Adults</label>
+            <input type="number" id="numAdults" name="numAdults" min="0" required><br>
+            <label for="numSenior_Citizen">Number of Senior Citizens</label>
+            <input type="number" id="numSenior_Citizen" name="numSenior_Citizen" min="0" required><br>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="form-container" id="formContainer"></div>
+
+        <button class="final-submit" onclick="submitAllForms()">Final Submit</button>
+    </div>
+
+    <script>
+        function generateForms(event) {
+            event.preventDefault();
+
+            const numChildren = document.getElementById('numChildren').value;
+            const numAdults = document.getElementById('numAdults').value;
+            const numSenior_Citizen = document.getElementById('numSenior_Citizen').value;
+
+            const totalPersons = parseInt(numChildren) + parseInt(numAdults) + parseInt(numSenior_Citizen);
+
+            const formContainer = document.getElementById('formContainer');
+            formContainer.innerHTML = '';
+
+            function createForm(type, placeholderAge, ageMin, ageMax, typeLabel, index) {
+                const form = document.createElement('form');
+                form.classList.add('individual-form');
+                const typeLowerCase = type.toLowerCase();
+                form.innerHTML = `
+                    <button type="button" class="close-btn" onclick="deleteForm(this)">X</button>
+                    <h2>${typeLabel} Form</h2>
+                    <label for="${typeLowerCase}Name${index}">Name</label>
+                    <input type="text" id="${typeLowerCase}Name${index}" name="${typeLowerCase}Name${index}" placeholder="Enter your name" required><br>
+                    <label for="${typeLowerCase}Age${index}">Age</label>
+                    <input type="number" id="${typeLowerCase}Age${index}" name="${typeLowerCase}Age${index}" placeholder="${placeholderAge}" required min="${ageMin}" max="${ageMax}"><br>
+                    <label for="${typeLowerCase}Gender${index}">Gender</label>
+                    <select id="${typeLowerCase}Gender${index}" name="${typeLowerCase}Gender${index}" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Others">Others</option>
+                    </select><br>
+                    <label for="${typeLowerCase}Food${index}">Food type</label>
+                    <select name="food" id="${typeLowerCase}Food${index}">
+                        <option value="Veg">Veg</option>
+                        <option value="non-veg">Non-Veg</option>
+                        <option value="Baby_Foods">Baby Foods</option>
+                    </select><br>
+                    <label for="${typeLowerCase}Health${index}">Health Issues</label>
+                    <select name="health" id="${typeLowerCase}Health${index}" onchange="toggleTextarea('${typeLowerCase}', ${index})">
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select><br>
+                    <textarea id="${typeLowerCase}HealthDetails${index}" name="${typeLowerCase}HealthDetails${index}" placeholder="Please describe the health issue"></textarea>
+                `;
+                return form;
+            }
+
+            function toggleTextarea(type, index) {
+                const healthSelect = document.getElementById(`${type}Health${index}`);
+                const healthDetailsTextarea = document.getElementById(`${type}HealthDetails${index}`);
+                if (healthSelect.value === 'Yes') {
+                    healthDetailsTextarea.style.display = 'block';
+                } else {
+                    healthDetailsTextarea.style.display = 'none';
+                }
+            }
+
+            for (let i = 0; i < numChildren; i++) {
+                formContainer.appendChild(createForm('Child', '0-12', 0, 12, 'Child', i));
+            }
+
+            for (let i = 0; i < numAdults; i++) {
+                formContainer.appendChild(createForm('Adult', '13-59', 13, 59, 'Adult', i));
+            }
+
+            for (let i = 0; i < numSenior_Citizen; i++) {
+                formContainer.appendChild(createForm('SC', '60+', 60, 120, 'Senior Citizen', i));
+            }
+
+            document.getElementById('initialForm').style.display = 'none';
+            formContainer.style.display = 'flex';
+            document.querySelector('.final-submit').style.display = 'block';
+        }
+
+        function deleteForm(button) {
+            const form = button.parentElement;
+            form.remove();
+        }
+
+
+        function submitAllForms() {
+            const forms = document.querySelectorAll('.individual-form');
+            let allValid = true;
+
+            forms.forEach(form => {
+                if (!form.checkValidity()) {
+                    allValid = false;
+                    form.reportValidity();
+                }
+            });
+
+            if (allValid) {
+                const numChildren = document.getElementById('numChildren').value;
+                const numAdults = document.getElementById('numAdults').value;
+                const numSenior_Citizen = document.getElementById('numSenior_Citizen').value;
+
+                const totalPersons = parseInt(numChildren) + parseInt(numAdults) + parseInt(numSenior_Citizen);
+                localStorage.setItem('totalPersons', totalPersons);
+
+                window.location.href = 'amount.html';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amount</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            text-align: center;
+            background-image: url('images/amount.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .Logo {
+            position: absolute;
+            left: 20px;
+            font-size: 2.5rem;
+            color: black;
+            font-weight: bolder;
+        }
+
+        .Logo a {
+            text-decoration: none;
+            font-size: 25px;
+            color: black;
+        }
+
+        .Logo i {
+            color: green;
+        }
+
+        .Booking_Form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 100px);
+            margin-top: 10px;
+        }
+
+        #initialForm {
+            border: 1px solid black;
+            padding: 30px;
+            border-radius: 2rem;
+            width: fit-content;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        #initialForm label,
+        input,
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 3px;
+            border-radius: 0.5rem;
+        }
+
+        button {
+            padding: 8px 16px;
+        }
+
+        #touristsLabel {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #amountLabel {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="Topic">
+        <div class="Logo">
+            <a href="#" class="logo"><i class="fas fa-hiking"></i> Travelers World</a>
+        </div>
+        <h1>Booking Form</h1><br>
+    </div>
+
+    <div id="touristsLabel">Total no. of Tourists: </div>
+
+    <div class="Booking_Form">
+        <form id="initialForm" onsubmit="handleSubmit(event)">
+
+            <label for="imageInput">Upload an Image</label>
+            <input type="file" id="imageInput" name="imageInput" accept="image/*" required><br>
+
+            <label id="amountLabel">Amount: </label><br>
+
+            <button type="submit">Submit</button>
+        </form>
+        <p>If you have any queries, please <a href="mailto:dinesh026150@gmail.com">contact us</a>.</p>
+    </div>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const totalPersons = localStorage.getItem('totalPersons') || 0;
+            const packagePrice = parseInt(localStorage.getItem('selectedPackagePrice')) || 8000;
+            const totalAmount = totalPersons * packagePrice;
+
+            alert('Congratulations, your trip has been booked! Total amount: ₹' + totalAmount + '. If you have any queries, contact us.');
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const touristsLabel = document.getElementById('touristsLabel');
+            const amountLabel = document.getElementById('amountLabel');
+            const totalPersons = localStorage.getItem('totalPersons');
+            const packagePrice = parseInt(localStorage.getItem('selectedPackagePrice')) || 8000;
+
+            if (totalPersons) {
+                touristsLabel.textContent = 'Total no. of Tourists: ' + totalPersons;
+                const totalAmount = totalPersons * packagePrice;
+                amountLabel.textContent = 'Amount: ₹' + totalAmount;
+            } else {
+                amountLabel.textContent = 'Amount: ₹0';
+            }
+        });
+    </script>
+</body>
+</html>
